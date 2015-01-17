@@ -1,2 +1,5 @@
-# clong
-A clone of pong.
+CLONG
+==============
+
+A clone of the classic game Pong
+--------------
