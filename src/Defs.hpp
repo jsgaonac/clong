@@ -20,4 +20,8 @@
 #define BALL_MOV 20
 #define BALL_MOV_INC 5
 
+#define ERR_NONE -1
+#define ERR_CANT_INIT_WIND0W 0
+#define ERR_CANT_LOAD_RES 1
+
 #endif //_CLONG_DEFS_H_

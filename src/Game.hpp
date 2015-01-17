@@ -5,20 +5,18 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "Ball.hpp"
-
-#include "Defs.hpp"
-
-#ifdef DEBUG
-#include <iostream>
-#endif
-			
 
 class Game
 {
 	//Private
-	sf::RenderWindow* gameWindow;
+	
+	// Errors
+	int errors;
+
+	std::unique_ptr<sf::RenderWindow> gameWindow;
 
 	//Used to Framerate-indepent rendering.
 	sf::Clock timeHandler;
@@ -26,18 +24,17 @@ class Game
 	/* Game Resources  */
 		
 	//Background texture
-	sf::Texture* backgroundTexture;
+	std::unique_ptr<sf::Texture> backgroundTexture;
 	
 	//Background sprite
 	sf::Sprite backgroundSprite;
 	
-	//The paddles for player one an two, respectively.
-	//I used a rectangle shape instead of a sprite and a texture because is simpler, in my opinion.
+	//The paddles for players one and two, respectively.
+	//I used a rectangle shape instead of a sprite and a texture because it's simpler, in my opinion.
 	//In case of needing 'fancy graphics', one could set a texture to this shape.
 	sf::RectangleShape paddleOne;
 	sf::RectangleShape paddleTwo;
 
-	//Self-explained.
 	Ball ball;
 
 	unsigned int scorePlayer1;
@@ -46,16 +43,8 @@ class Game
 	//The maximum score. When a player reaches this score the game ends.
 	unsigned int scoreLimit;
 	
-	
-	//Returns true on success, false otherwise.
-	bool initWindow( unsigned int width, unsigned int height, unsigned int bpp, 
-		std::string windowTitle );
-		
-	//Loads al the resources and returns true if everything loaded well. False, otherwise.
+	// Loads the textures of the game.
 	bool loadResources();
-	
-	//Frees the memory allocated by the resources.
-	void cleanupResources();
 
 	//Draw all the things that are meant to be displayed.
 	void drawAll();
@@ -68,13 +57,12 @@ class Game
 
 	public:
 	
-	Game();
+	Game(unsigned int width, unsigned int height, unsigned int bpp, std::string windowTitle);
 	
 	int run();
 	
 		
 	virtual ~Game();
-	
 };
 	
 

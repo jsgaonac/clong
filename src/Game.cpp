@@ -1,33 +1,28 @@
 #include "Game.hpp"
+#include "Defs.hpp"
 
-Game::Game()
+#ifdef DEBUG
+#include <iostream>
+#endif
+
+Game::Game(unsigned int width, unsigned int height, unsigned int bpp, std::string windowTitle) :
+	gameWindow(new sf::RenderWindow( sf::VideoMode( width, height, bpp ), windowTitle )),
+	backgroundTexture(new sf::Texture())
 {
-	gameWindow = nullptr;
-	
-	backgroundTexture = nullptr;	
+	errors = ERR_NONE;
 
-}
-
-bool Game::initWindow( unsigned int width, unsigned int height, unsigned int bpp, std::string windowTitle )
-{
-	gameWindow = new sf::RenderWindow( sf::VideoMode( width, height, bpp ), windowTitle );
-	
 	if( gameWindow == nullptr )
 	{
+		errors = ERR_CANT_INIT_WIND0W;
 		#ifdef DEBUG
 		std::cout << "[Couldn't open a window.]" << std::endl;
 		#endif
-		
-		return false;	
 	}
-		
-	return true;	
+
 }
 
 bool Game::loadResources()
 {
-	backgroundTexture = new sf::Texture();
-
 	bool success = true;
 	
 	if( !backgroundTexture->loadFromFile( "../resources/Background.png" ) )
@@ -53,23 +48,18 @@ bool Game::loadResources()
 	return success;
 }
 
-void Game::cleanupResources()
-{
-	if( backgroundTexture != nullptr )
-	{
-		delete backgroundTexture;
-		backgroundTexture = nullptr;
-	}
-}
-
 int Game::run()
 {
-	if( !loadResources() )
+	// Checks at start that a window was constructed.
+	if (errors == ERR_CANT_INIT_WIND0W)
 	{
 		return -1;
 	}
-	
-	if( !initWindow( SCREEN_W, SCREEN_H, 32, "Clong v0.4" ) ) return -2;
+
+	if (!loadResources())
+	{
+		return -2;
+	}
 	
 	timeHandler.restart();
 	sf::Event event;
@@ -163,18 +153,5 @@ void Game::checkBounds()
 
 Game::~Game()
 {
-	cleanupResources();
-	
-	if( gameWindow != nullptr ) delete gameWindow;		
+
 }
-	
-	
-	
-	
-	
-			
-	
-	
-	
-	
-			
