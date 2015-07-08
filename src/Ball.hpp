@@ -15,6 +15,8 @@ class Ball
 
 	float getVelMagnitude();
 
+	sf::Clock timer;
+
 public:
 
 	Ball();
@@ -24,8 +26,6 @@ public:
 
 	//Make the ball start its movement. It may be used to reset the ball.
 	void start();
-
-	sf::Color getRandomColor();
 
 	sf::CircleShape& getBall();
 

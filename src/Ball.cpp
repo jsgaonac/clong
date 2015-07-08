@@ -1,15 +1,12 @@
 #include "Ball.hpp"
-#include "mt19937ar.h"
 #include "Defs.hpp"
+#include "Util.hpp"
 
-#include <ctime>
-#include <cstdint>
+#include <random>
 
 Ball::Ball()
 {
-	//Seeds the PRNG
-	init_genrand( time(NULL) );
-
+	timer.restart();
 	colorize();
 
 	theBall.setRadius( BALL_RAD );
@@ -21,17 +18,13 @@ Ball::Ball()
 
 void Ball::colorize()
 {
-	theBall.setFillColor( getRandomColor() );
-	theBall.setOutlineColor( getRandomColor() );
-}
+	if (timer.getElapsedTime().asSeconds() > 1)
+	{
+		theBall.setFillColor(getRandomColor());
+		theBall.setOutlineColor(getRandomColor());
 
-sf::Color Ball::getRandomColor()
-{
-	uint32_t R = genrand_int32() % 256;
-	uint32_t G = genrand_int32() % 256;
-	uint32_t B = genrand_int32() % 256;
-
-	return sf::Color( R, G, B );
+		timer.restart();
+	}
 }
 
 sf::CircleShape& Ball::getBall()

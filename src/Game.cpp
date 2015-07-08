@@ -72,6 +72,8 @@ int Game::run()
 			if(event.type == sf::Event::Closed) gameWindow->close();
         }
 
+        ball.colorize();
+
         //Checks if the players want their paddles to move.
 		handleInput();
 
